@@ -97,6 +97,67 @@ void STinsert(Node node){
     head = insert(head, node, 0);
 }
 
+link ahocorasick(link h, link k, int i, int j, int sw)
+{
+    if(sw == 0)
+    {
+        if(h == z)
+        {
+            return z;
+        }
+    }
+    else if(k->N < 2)
+    {
+        return z;
+    }
+    else if(h == z)
+    {
+        return z;
+    }
+    else if(strcmp(Skey(h->node), Skey(k->node)+j) == 0)
+    {     
+        return h;
+    }
+    else if(Ckey(k->node, i+j) == 'a')
+    {
+        return ahocorasick(h->a, k, i+1, j, 1);
+    }
+    else if(Ckey(k->node, i+j) == 'b')
+    {
+        return ahocorasick(h->b, k, i+1, j, 1);
+    }
+    else if(Ckey(k->node, i+j) == 'c')
+    {
+        return ahocorasick(h->c, k, i+1, j, 1);
+    }
+    else
+    {
+        return ahocorasick(h->d, k, i+1, j, 1);
+    }
+    if(sw == 0)
+    {
+        while(1)
+        {
+            h -> x = ahocorasick(head, h, 0, j, 1);
+            j++;
+            if(h->x == z &&  j < h->N) continue;
+            else break;
+            
+        }
+        ahocorasick(h->a, k, 0, 1, 0);
+        ahocorasick(h->b, k, 0, 1, 0);
+        ahocorasick(h->c, k, 0, 1, 0);
+        ahocorasick(h->d, k, 0, 1, 0);
+    }
+    return h;
+}
+
+void STahocorasick()
+{
+    head = ahocorasick(head, head, 0, 1, 0);
+}
+
+
 void STshow(link h){
     int i = 0;
     if(h == z)
@@ -126,7 +187,7 @@ int main(void)
     scanf("%s", s);
     scanf("%s", t);
     STinit();
-    strcpy(Skey(node), "abc");
+    /*strcpy(Skey(node), "abc");
     printf("insert:%s\n", Skey(node));
     STinsert(node);
 
@@ -147,8 +208,38 @@ int main(void)
     STinsert(node);
 
     strcpy(Skey(node), "bbbcabaddd");
-    printf("insert:%s\n", Skey(node));
+    printf("insert:%s\n", Skey(node));*/
+
+    while(scanf("%s", Skey(node)) != EOF)
+    {
+        STinsert(node);
+    }
+
     STinsert(node);
+
+    STahocorasick();
 
     STshowAll();
 }
+
+/*
+cccaabbbbbbcccddddccccbbbbbbaaaaaaacccccaabcbabcbabcbbcbababcbbdbbdbdbbdbdbdbbdbdbbdbdbdbdbbcabbabdbbabbdbbabbbdbbb
+xxxxabbbxxbcccdddxccccbbxxxbaaxxaaaccxccaabcbabcbabcbbcbababcbbdbbdbdbbdbdbdbbdbdbbdbdbdbdbbcabbabdbbabbdbbabbbdbbb
+c
+cccaabb
+bbabbbd
+cccaabbbbbb
+bdb
+abbbbb
+bbcccddddc
+bb
+abcbbdbbdbdbbdbdbdbb
+ccbbbbbb
+aacccccaabcbabcbabcbbcbababcbbdbbd
+b
+bbaaaaa
+bbdbdbdbdbbcabbabdbbabb
+bbbbbaaaaaaacccc
+bbbdbbb
+cc
+*/
