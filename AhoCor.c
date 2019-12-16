@@ -163,35 +163,59 @@ void STahocorasick()
 
 void throughPut(char *str, int *isAccepted, link h, int i, int *aclength)
 {
-     char c = str[i];
-    if(c == '\0')
+    link k;
+    while(1)
     {
-        return;
-    }
-    if(h->node.key == 's')
-    {
-        isAccepted[h->node.id-1] = i;
-        
-    }
-    if(c == 'a')
-    {
-        if(h->a == z) throughPut(str, isAccepted, h->x, i, aclength);
-        else throughPut(str, isAccepted, h->a, i+1, aclength);
-    }
-    else if(c == 'b')
-    {
-        if(h->b == z) throughPut(str, isAccepted, h->x, i, aclength);
-        else throughPut(str, isAccepted, h->b, i+1, aclength);
-    }
-    else if(c == 'c')
-    {
-        if(h->c == z) throughPut(str, isAccepted, h->x, i, aclength);
-        else throughPut(str, isAccepted, h->c, i+1, aclength);
-    }
-    else if(c == 'd')
-    {
-        if(h->d == z) throughPut(str, isAccepted, h->x, i, aclength);
-        else throughPut(str, isAccepted, h->d, i+1, aclength);
+        char c = str[i];
+        if(i != 0){
+            h = k;
+        }
+        if(c == '\0')
+        {
+            return;
+        }
+        if(h->node.key == 's')
+        {
+            isAccepted[h->node.id] = 1;
+            aclength[h->node.id] = strlen(Skey(h->node));
+            
+        }
+        if(c == 'a')
+        {
+            if(h->a == z) k = h->x;
+            else 
+            {
+                k = h->a;
+                i++;
+            }
+        }
+        else if(c == 'b')
+        {
+            if(h->b == z) k = h->x;
+            else 
+            {
+                k = h->b;
+                i++;
+            }
+        }
+        else if(c == 'c')
+        {
+            if(h->c == z) k = h->x;
+            else 
+            {
+                k = h->c;
+                i++;
+            }
+        }
+        else if(c == 'd')
+        {
+            if(h->d == z) k = h->x;
+            else 
+            {
+                k = h->d;
+                i++;
+            }
+        }
     }
 }
 
