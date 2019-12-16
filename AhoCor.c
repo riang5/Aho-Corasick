@@ -37,6 +37,8 @@ link insert(link h, Node node, int N, int id)
     {
         node.key = 's';
         node.id = id;
+        h->node.key = 's';
+        h->node.id = id;
         return NEW(node, z, z, z, z, N); 
     }
     strcpy(Skey(fnode), Skey(node));
@@ -218,7 +220,7 @@ void STshowAll(void){
     STshow(head);
 }
 
-int main(void)
+/*int main(void)
 {
     Node node;
     char *s, *t;
@@ -228,7 +230,7 @@ int main(void)
     scanf("%s", s);
     scanf("%s", t);
     STinit();
-    /*strcpy(Skey(node), "abc");
+    strcpy(Skey(node), "abc");
     printf("insert:%s\n", Skey(node));
     STinsert(node);
 
@@ -249,7 +251,7 @@ int main(void)
     STinsert(node);
 
     strcpy(Skey(node), "bbbcabaddd");
-    printf("insert:%s\n", Skey(node));*/
+    printf("insert:%s\n", Skey(node));
 
     while(scanf("%s", Skey(node)) != EOF)
     {
@@ -259,7 +261,7 @@ int main(void)
     STahocorasick();
 
     STshowAll();
-}
+}*/
 
 /*
 cccaabbbbbbcccddddccccbbbbbbaaaaaaacccccaabcbabcbabcbbcbababcbbdbbdbdbbdbdbdbbdbdbbdbdbdbdbbcabbabdbbabbdbbabbbdbbb
