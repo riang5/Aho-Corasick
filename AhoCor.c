@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Node.h"
+#include "AhoCor.h"
 
 typedef struct STnode* link;
 struct STnode{
@@ -27,7 +27,7 @@ void STinit(){
     head = NEW(NULLnode, z, z, z, z, 0);
 }
 
-link insert(link h, Node node, int N)
+link insert(link h, Node node, int N, int id)
 {
     Node fnode;
     Key v = Ckey(node, N);
@@ -35,6 +35,8 @@ link insert(link h, Node node, int N)
     //printf("process:in\n");
     if(v == '\0')
     {
+        node.key = 's';
+        node.id = id;
         return NEW(node, z, z, z, z, N); 
     }
     strcpy(Skey(fnode), Skey(node));
@@ -51,9 +53,9 @@ link insert(link h, Node node, int N)
         if(h -> a == z)
         {
             h -> a = NEW(fnode, z, z, z, z, N+1);
-            h -> a = insert(h -> a, node, N+1);
+            h -> a = insert(h -> a, node, N+1, id);
         }
-        else insert(h -> a, node, N+1);
+        else insert(h -> a, node, N+1, id);
         
     }
     else if(v == 'b')
@@ -63,9 +65,9 @@ link insert(link h, Node node, int N)
         if(h -> b == z)
         {
             h -> b = NEW(fnode, z, z, z, z, N+1);
-            h -> b = insert(h->b, node, N+1);
+            h -> b = insert(h->b, node, N+1, id);
         }
-        else insert(h->b, node, N+1);
+        else insert(h->b, node, N+1, id);
        
     }
     else if(v == 'c')
@@ -74,9 +76,9 @@ link insert(link h, Node node, int N)
         if(h -> c == z)
         {
             h -> c = NEW(fnode, z, z, z, z, N+1);
-            h -> c = insert(h->c, node, N+1);
+            h -> c = insert(h->c, node, N+1, id);
         }
-        else insert(h->c, node, N+1);
+        else insert(h->c, node, N+1, id);
             
     }
     else
@@ -85,16 +87,16 @@ link insert(link h, Node node, int N)
         if(h -> d == z)
         {
             h -> d = NEW(fnode, z, z, z, z, N+1);
-            h -> d = insert(h->d, node, N+1);
+            h -> d = insert(h->d, node, N+1, id);
         }
-        else insert(h->d, node, N+1);
+        else insert(h->d, node, N+1, id);
     }
     //printf("finish!\n");
     return h;
 }
 
-void STinsert(Node node){
-    head = insert(head, node, 0);
+void STinsert(Node node, int id){
+    head = insert(head, node, 0, id);
 }
 
 link ahocorasick(link h, link k, int i, int j, int sw)
@@ -157,6 +159,45 @@ void STahocorasick()
     head = ahocorasick(head, head, 0, 1, 0);
 }
 
+void throughPut(char *str, int *isAccepted, link h, int i, int *aclength)
+{
+     char c = str[i];
+    if(c == '\0')
+    {
+        return;
+    }
+    if(h->node.key == 's')
+    {
+        isAccepted[h->node.id-1] = i;
+        
+    }
+    if(c == 'a')
+    {
+        if(h->a == z) throughPut(str, isAccepted, h->x, i, aclength);
+        else throughPut(str, isAccepted, h->a, i+1, aclength);
+    }
+    else if(c == 'b')
+    {
+        if(h->b == z) throughPut(str, isAccepted, h->x, i, aclength);
+        else throughPut(str, isAccepted, h->b, i+1, aclength);
+    }
+    else if(c == 'c')
+    {
+        if(h->c == z) throughPut(str, isAccepted, h->x, i, aclength);
+        else throughPut(str, isAccepted, h->c, i+1, aclength);
+    }
+    else if(c == 'd')
+    {
+        if(h->d == z) throughPut(str, isAccepted, h->x, i, aclength);
+        else throughPut(str, isAccepted, h->d, i+1, aclength);
+    }
+}
+
+void STthroughPut(char *s, int *isAccepted, int i, int *aclength)
+{
+    throughPut(s, isAccepted, head, i, aclength);
+}
+
 
 void STshow(link h){
     int i = 0;
@@ -212,10 +253,8 @@ int main(void)
 
     while(scanf("%s", Skey(node)) != EOF)
     {
-        STinsert(node);
+        STinsert(node, 0);
     }
-
-    STinsert(node);
 
     STahocorasick();
 
