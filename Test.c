@@ -78,7 +78,7 @@
         xpos[i] = 0;
     }
 
-    STthroughPut(Data, isAccepted, 0, aclength);
+    STthroughPut(Data, isAccepted, 0, aclength, test);
 
 
     for(i = 0; i < 400002; i++)
@@ -93,7 +93,7 @@
     int NumOfx = 0, NumOfCover = 0, NumOfCoveredx = 0;
     for(i = 0; i < 400002; i++)
     {
-        if(xpos[i] == 1 && test[i] != 0)
+        if(xpos[i] == 1 && test[i] == 1)
         {
             NumOfCoveredx++;
         }
@@ -101,7 +101,7 @@
         {
             NumOfx++;
         }
-        if(test[i] != 0)
+        if(test[i] == 1)
         {
             NumOfCover++;
         }

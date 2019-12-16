@@ -161,12 +161,13 @@ void STahocorasick()
     head = ahocorasick(head, head, 0, 1, 0);
 }
 
-void throughPut(char *str, int *isAccepted, link h, int i, int *aclength)
+void throughPut(char *str, int *isAccepted, link h, int i, int *aclength, int *test)
 {
     link k;
     while(1)
     {
         char c = str[i];
+        int r, l, j;
         if(i != 0){
             h = k;
         }
@@ -178,7 +179,13 @@ void throughPut(char *str, int *isAccepted, link h, int i, int *aclength)
         {
             isAccepted[h->node.id] = 1;
             aclength[h->node.id] = strlen(Skey(h->node));
-            
+            r = i - strlen(Skey(h->node));
+            l = i;
+            for(j = r; j < l; j++)
+            {
+                test[j] = 1;
+            }
+            //if(i > 18 && i < 75) printf("18 < i < 75 id:%d str:%s i:%d\n", h->node.id, Skey(h->node), i);
         }
         if(c == 'a')
         {
@@ -219,9 +226,9 @@ void throughPut(char *str, int *isAccepted, link h, int i, int *aclength)
     }
 }
 
-void STthroughPut(char *s, int *isAccepted, int i, int *aclength)
+void STthroughPut(char *s, int *isAccepted, int i, int *aclength, int *test)
 {
-    throughPut(s, isAccepted, head, i, aclength);
+    throughPut(s, isAccepted, head, i, aclength, test);
 }
 
 
